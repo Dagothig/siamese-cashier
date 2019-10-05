@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7312390b3853e449b2904dffc8fc26c, type: 3}
   m_Name: Banana
   m_EditorClassIdentifier: 
-  name: Banana
+  article: 0
   price: 1
+  radius: 0.5
   processingList: 0000000002000000
