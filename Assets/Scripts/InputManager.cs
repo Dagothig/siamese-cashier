@@ -1,23 +1,38 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class InputManager : MonoBehaviour
 {
     public List<sDoubleInteraction> m_interactionList;
     public List<eCashierActions> m_mappedActions;
+
+    public string[] m_keysP1;
+    public string[] m_keysP2;
+
     public bool m_inputSet;
+
+    void Awake()
+    {
+        m_keysP1 = Enum.GetNames(typeof(interactionsP1)).Take((int)interactionsP1.Count).Select(x => x.ToLower()).ToArray();
+        m_keysP2 = Enum.GetNames(typeof(interactionsP2)).Take((int)interactionsP2.Count).Select(x => x.ToLower()).ToArray();
+    }
 
     void Update()
     {
-        if (Input.GetKey("up"))
+        for (var keyP1 = 0; keyP1 < m_keysP1.Length; keyP1++)
         {
-            if (Input.GetKey("w"))
+            if (!Input.GetKey(m_keysP1[keyP1]))
+                continue;
+            for (var keyP2 = 0; keyP2 < m_keysP2.Length; keyP2++)
             {
+                if (!Input.GetKey(m_keysP2[keyP2]))
+                    continue;
+
                 if (!m_inputSet)
-                {
-                    GetOrSetInteraction(interactionsP1.W, interactionsP2.Up);
-                }
+                    GetOrSetInteraction((interactionsP1)keyP1, (interactionsP2)keyP2);
                 m_inputSet = true;
                 return;
             }
@@ -25,7 +40,7 @@ public class InputManager : MonoBehaviour
         m_inputSet = false;
     }
 
-    eCashierActions GetOrSetInteraction(interactionsP1 p1Action, interactionsP2 p2Action)
+    void GetOrSetInteraction(interactionsP1 p1Action, interactionsP2 p2Action)
     {
         foreach (var interaction in m_interactionList)
         {
@@ -33,14 +48,15 @@ public class InputManager : MonoBehaviour
             {
                 //Already Mapped
                 GameManager.s_instance.MakeAction(interaction.action);
-
-                return interaction.action;
+                return;
             }
         }
+        if (GameManager.s_instance.m_availableActions.Count == 0)
+            return;
+
         var action = GameManager.s_instance.m_availableActions[0];
         MapAction(p1Action, p2Action, action);
         GameManager.s_instance.MakeAction(action);
-        return action;
     }
 
     void MapAction(interactionsP1 p1Action, interactionsP2 p2Action, eCashierActions action)
