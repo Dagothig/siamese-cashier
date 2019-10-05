@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     public Client m_currentClient;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
-    public List<eCashierActions> m_availableActions;
+    public List<sCashierAction> m_availableActions;
 
 
     void Awake()
@@ -45,22 +46,14 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void MakeAction(eCashierActions action)
+    public void MakeAction(eCashierActions action, eArticles article)
     {
-        if (action == eCashierActions.Grab1)
+        if (action == eCashierActions.Grab)
         {
-            //There is article 1 on the tray and you pressed grab article 1!
-            if (m_availableActions.Contains(action))
-            {
-                var beer = GetZone(eZones.Tray).GetArticle(eArticles.Beer);
-                GetZone(eZones.Hand).MoveArticleHere(beer);
-                m_availableActions.Remove(eCashierActions.Grab1);
-            }
-            //Dude, you don't have article 1 on the tray!
-            else
-            {
-
-            }
+            //The article is on the tray and you pressed to grab it!
+            var picked = GetZone(eZones.Tray).GetArticle(article);
+            if (picked != null)
+                GetZone(eZones.Hand).MoveArticleHere(picked);
         }
     }
 
@@ -70,11 +63,17 @@ public class GameManager : MonoBehaviour
         foreach (var article in articles)
         {
             GetZone(eZones.Tray).MoveArticleHere(article);
-            m_availableActions.AddRange(article.m_articleData.processingList);
+            m_availableActions.AddRange(
+                article.m_articleData.processingList
+                .Select(a => 
+                    new sCashierAction { 
+                        eAction = a, 
+                        eArticle = a == eCashierActions.Grab ? article.m_articleData.article : eArticles.Count 
+                    }));
         }
-        m_availableActions.Add(eCashierActions.CashRegister);
-        m_availableActions.Add(eCashierActions.Client);
-        m_availableActions.Add(eCashierActions.CashRegister);
+        m_availableActions.Add((sCashierAction)eCashierActions.CashRegister);
+        m_availableActions.Add((sCashierAction)eCashierActions.Client);
+        m_availableActions.Add((sCashierAction)eCashierActions.CashRegister);
     }
 }
 
@@ -90,4 +89,14 @@ public struct sZones
 {
     public eZones eZone;
     public Zone zone;
+}
+
+[System.Serializable]
+public struct sCashierAction
+{
+    public eCashierActions eAction;
+    public eArticles eArticle;
+
+    public static explicit operator sCashierAction(eCashierActions action) => 
+        new sCashierAction { eAction = action, eArticle= eArticles.Count };
 }

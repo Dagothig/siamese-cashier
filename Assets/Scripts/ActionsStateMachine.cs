@@ -19,14 +19,7 @@ public class ActionsStateMachine : MonoBehaviour
 
  public enum eCashierActions
 {
-    Grab1,
-    Grab2,
-    Grab3,
-    Grab4,
-    Grab5,
-    Grab6,
-    Grab7,
-    Grab8,
+    Grab,
     Scan,
     Scale,
     Hit,

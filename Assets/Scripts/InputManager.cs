@@ -47,7 +47,7 @@ public class InputManager : MonoBehaviour
             if (p1Action == interaction.p1Input && p2Action == interaction.p2Input)
             {
                 //Already Mapped
-                GameManager.s_instance.MakeAction(interaction.action);
+                GameManager.s_instance.MakeAction(interaction.action, interaction.action == eCashierActions.Grab ? interaction.article : eArticles.Count);
                 return;
             }
         }
@@ -56,12 +56,18 @@ public class InputManager : MonoBehaviour
 
         var action = GameManager.s_instance.m_availableActions[0];
         MapAction(p1Action, p2Action, action);
-        GameManager.s_instance.MakeAction(action);
+        GameManager.s_instance.MakeAction(action.eAction, action.eArticle);
     }
 
-    void MapAction(interactionsP1 p1Action, interactionsP2 p2Action, eCashierActions action)
+    void MapAction(interactionsP1 p1Action, interactionsP2 p2Action, sCashierAction action)
     {
-        var interaction = new sDoubleInteraction() { p1Input = p1Action, p2Input = p2Action, action = action} ;
+        var interaction = new sDoubleInteraction() 
+        { 
+            p1Input = p1Action, 
+            p2Input = p2Action, 
+            action = action.eAction, 
+            article = action.eArticle 
+        };
         m_interactionList.Add(interaction);
     }
 }
@@ -72,6 +78,7 @@ public struct sDoubleInteraction
     public interactionsP1 p1Input;
     public interactionsP2 p2Input;
     public eCashierActions action;
+    public eArticles article;
 }
 
 public enum interactionsP1
