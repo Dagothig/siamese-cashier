@@ -9,6 +9,7 @@ public class ArticleData : ScriptableObject
     public int price;
     public float radius;
     public List<eCashierActions> processingList;
+    public Sprite sprite;
 }
 public enum eArticles
 {

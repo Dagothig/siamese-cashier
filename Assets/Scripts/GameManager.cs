@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public Client m_currentClient;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
-    public List<sCashierAction> m_availableActions;
 
 
     void Awake()
@@ -28,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (m_currentClient == null || m_availableActions.Count == 0)
+        if (m_currentClient == null)
         {
             m_currentClient = Instantiate(m_clientPrefab, transform).GetComponent<Client>();
         }
@@ -46,34 +45,72 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void MakeAction(eCashierActions action, eArticles article)
+    public void MakeAction(sCashierAction action)
     {
-        if (action == eCashierActions.Grab)
+        if (action.eAction == eCashierActions.Grab)
         {
             //The article is on the tray and you pressed to grab it!
-            var picked = GetZone(eZones.Tray).GetArticle(article);
+            var picked = GetZone(eZones.Tray).GetArticle(action.eArticle);
             if (picked != null)
+            {
                 GetZone(eZones.Hand).MoveArticleHere(picked);
+                picked.m_processingList.RemoveAt(0);
+            }
+        }
+        if (action.eAction == eCashierActions.Scan)
+        {
+            var picked = GetZone(eZones.Hand).GetArticle();
+            if (picked != null)
+            {
+                GetZone(eZones.Bag).MoveArticleHere(picked);
+                picked.m_processingList.RemoveAt(0);
+            }
         }
     }
 
     public void ResetClient(Client client, List<Article> articles)
     {
-        m_availableActions.Clear();
         foreach (var article in articles)
         {
             GetZone(eZones.Tray).MoveArticleHere(article);
-            m_availableActions.AddRange(
-                article.m_articleData.processingList
-                .Select(a => 
-                    new sCashierAction { 
-                        eAction = a, 
-                        eArticle = a == eCashierActions.Grab ? article.m_articleData.article : eArticles.Count 
-                    }));
         }
-        m_availableActions.Add((sCashierAction)eCashierActions.CashRegister);
-        m_availableActions.Add((sCashierAction)eCashierActions.Client);
-        m_availableActions.Add((sCashierAction)eCashierActions.CashRegister);
+    }
+
+    public sCashierAction GetNextActionToMap(IList<sDoubleInteraction> interactions)
+    {
+        var hand = GetZone(eZones.Hand);
+        var handArticle = hand.GetArticle();
+        if (handArticle?.m_processingList.Any() ?? false)
+        {
+            var action = handArticle.m_processingList.First();
+            var article = handArticle.m_articleData.article;
+            if (!interactions.Any(i => i.action.eAction == action && i.action.eArticle == article))
+            {
+                return new sCashierAction 
+                { 
+                    eAction = action, 
+                    eArticle = handArticle.m_articleData.article 
+                };
+            }
+        }
+
+        var tray = GetZone(eZones.Tray);
+        var unmappedTrayArticles = 
+            tray.m_currentArticles.Where(a => 
+                !interactions.Any(i => 
+                    i.action.eAction == eCashierActions.Grab && 
+                    a.m_articleData.article == i.action.eArticle));
+        var trayArticle = unmappedTrayArticles.FirstOrDefault();
+        if (trayArticle?.m_processingList.Any() ?? false)
+        {
+            return new sCashierAction
+            {
+                eAction = trayArticle.m_processingList.First(),
+                eArticle = trayArticle.m_articleData.article
+            };
+        }
+
+        return (sCashierAction)m_currentClient.m_processingList.DefaultIfEmpty(eCashierActions.Count).FirstOrDefault();
     }
 }
 

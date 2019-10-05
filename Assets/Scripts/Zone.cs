@@ -64,8 +64,10 @@ public class Zone : MonoBehaviour
         }
     }
 
-    public Article GetArticle(eArticles article)
+    public Article GetArticle(eArticles article = eArticles.Count)
     {
+        if (article == eArticles.Count)
+            return m_currentArticles.FirstOrDefault();
         foreach (var arti in m_currentArticles)
         {
             if (arti.m_articleData.article == article)

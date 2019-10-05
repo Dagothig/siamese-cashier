@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_articleData: {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
+  m_currentZone: {fileID: 0}
 --- !u!212 &879157142499521018
 SpriteRenderer:
   m_ObjectHideFlags: 0

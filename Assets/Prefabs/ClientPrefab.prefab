@@ -47,6 +47,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
   - {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
   - {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
+  - {fileID: 11400000, guid: 52036dd487dc57c4db6d886be615ab61, type: 2}
+  - {fileID: 11400000, guid: 52036dd487dc57c4db6d886be615ab61, type: 2}
+  - {fileID: 11400000, guid: b4dd8124307d2884e83095914d0f2d43, type: 2}
+  - {fileID: 11400000, guid: 9c33ad6887fa1e44b8bfd9f7c77a1fa0, type: 2}
+  - {fileID: 11400000, guid: 46d7718c17733564a8c9e06d41af94ff, type: 2}
+  - {fileID: 11400000, guid: 46d7718c17733564a8c9e06d41af94ff, type: 2}
+  - {fileID: 11400000, guid: 1f686edbfe9c45848a2a410e7f90c895, type: 2}
   m_articlePrefab: {fileID: 879157142499521017, guid: dfa2c3ce7c546394ebcd79fee806d87f,
     type: 3}
   m_patienceTime: 30
+  m_processingList: 
