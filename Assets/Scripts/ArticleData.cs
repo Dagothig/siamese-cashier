@@ -13,6 +13,17 @@ public class ArticleData : ScriptableObject
 public enum eArticles
 {
     Beer,
-    Ghost,
+    Tentacle,
+    Brains,
+    Pickle,
+    Bat,
+    MonkeyPaw,
+    SoulJar,
+    IvBag,
+    Pumpkin,
+    Plant,
+    Cockroach,
+    Eggs,
+    Head,
     Count
 }
