@@ -12,3 +12,14 @@ public class Zone : MonoBehaviour
         article.transform.position = transform.position;
     }
 }
+
+
+public enum eZones
+{
+    Tray,
+    Bag,
+    Scanner,
+    Scale,
+    Hand,
+    Count
+}

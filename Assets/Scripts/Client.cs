@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Client : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public List<ArticleData> m_articleList;
+    public GameObject m_articlePrefab;
+    public float m_patienceTime;
+
     void Start()
     {
-        
+        GenerateGrocery();
     }
 
-    // Update is called once per frame
-    void Update()
+    void GenerateGrocery()
     {
-        
+        foreach (var data in m_articleList)
+        {
+            var article = Instantiate(m_articlePrefab).GetComponent<Article>();
+            GameManager.s_instance.GetZone(eZones.Tray).MoveArticleHere(article);
+        }
     }
 }

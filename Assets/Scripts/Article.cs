@@ -6,8 +6,4 @@ public class Article : MonoBehaviour
 {
     public ArticleData m_articleData;
 
-    public void MoveArticle(Zone zone)
-    {
-        zone.MoveArticleHere(this);
-    }
 }
