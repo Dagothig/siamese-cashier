@@ -5,5 +5,5 @@ using UnityEngine;
 public class Article : MonoBehaviour
 {
     public ArticleData m_articleData;
-
+    public Zone m_currentZone;
 }

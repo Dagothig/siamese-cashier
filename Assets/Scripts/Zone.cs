@@ -8,8 +8,21 @@ public class Zone : MonoBehaviour
 
     public void MoveArticleHere(Article article)
     {
+        if (article.m_currentZone != null)
+        {
+            article.m_currentZone.RemoveArticle(article);
+        }
         m_currentArticles.Add(article);
         article.transform.position = transform.position;
+        article.m_currentZone = this;
+    }
+
+    public void RemoveArticle(Article article)
+    {
+        if (m_currentArticles.Contains(article))
+        {
+            m_currentArticles.Remove(article);
+        }
     }
 }
 
