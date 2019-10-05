@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (m_currentClient == null)
+        if (m_currentClient == null || m_availableActions.Count == 0)
         {
             m_currentClient = Instantiate(m_clientPrefab, transform).GetComponent<Client>();
         }
@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
             {
                 var beer = GetZone(eZones.Tray).GetArticle(eArticles.Beer);
                 GetZone(eZones.Hand).MoveArticleHere(beer);
+                m_availableActions.Remove(eCashierActions.Grab1);
             }
             //Dude, you don't have article 1 on the tray!
             else
@@ -61,6 +62,19 @@ public class GameManager : MonoBehaviour
 
             }
         }
+    }
+
+    public void ResetClient(Client client, List<Article> articles)
+    {
+        m_availableActions.Clear();
+        foreach (var article in articles)
+        {
+            GetZone(eZones.Tray).MoveArticleHere(article);
+            m_availableActions.AddRange(article.m_articleData.processingList);
+        }
+        m_availableActions.Add(eCashierActions.CashRegister);
+        m_availableActions.Add(eCashierActions.Client);
+        m_availableActions.Add(eCashierActions.CashRegister);
     }
 }
 

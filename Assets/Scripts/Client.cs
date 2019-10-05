@@ -15,10 +15,12 @@ public class Client : MonoBehaviour
 
     void GenerateGrocery()
     {
+        List<Article> articles = new List<Article>();
         foreach (var data in m_articleList)
         {
-            var article = Instantiate(m_articlePrefab).GetComponent<Article>();
-            GameManager.s_instance.GetZone(eZones.Tray).MoveArticleHere(article);
+            articles.Add(Instantiate(m_articlePrefab).GetComponent<Article>());
         }
+        GameManager.s_instance.ResetClient(this, articles);
+
     }
 }

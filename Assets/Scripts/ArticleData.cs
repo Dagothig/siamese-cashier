@@ -13,5 +13,6 @@ public class ArticleData : ScriptableObject
 public enum eArticles
 {
     Beer,
+    Ghost,
     Count
 }
