@@ -17,16 +17,20 @@ public class ActionsStateMachine : MonoBehaviour
     }
 }
 
-namespace SiameseCashier
+ public enum eCashierActions
 {
-    public enum eCashierActions
-    {
-        Grab,
-        Scan,
-        Scale,
-        Hit,
-        CashRegister,
-        Client,
-        Count
-    }
+    Grab1,
+    Grab2,
+    Grab3,
+    Grab4,
+    Grab5,
+    Grab6,
+    Grab7,
+    Grab8,
+    Scan,
+    Scale,
+    Hit,
+    CashRegister,
+    Client,
+    Count
 }

@@ -24,6 +24,18 @@ public class Zone : MonoBehaviour
             m_currentArticles.Remove(article);
         }
     }
+
+    public Article GetArticle(eArticles article)
+    {
+        foreach (var arti in m_currentArticles)
+        {
+            if (arti.m_articleData.article == article)
+            {
+                return arti;
+            }
+        }
+        return null;
+    }
 }
 
 

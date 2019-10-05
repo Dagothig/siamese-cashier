@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SiameseCashier;
 
 [CreateAssetMenu(fileName = "ArticleData", menuName = "ArticleData")]
 public class ArticleData : ScriptableObject
@@ -10,12 +9,8 @@ public class ArticleData : ScriptableObject
     public int price;
     public List<eCashierActions> processingList;
 }
-
-namespace SiameseCashier
+public enum eArticles
 {
-    public enum eArticles
-    {
-        Banana,
-        Count
-    }
+    Beer,
+    Count
 }

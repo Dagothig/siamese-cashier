@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SiameseCashier;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class GameManager : MonoBehaviour
     public Client m_currentClient;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
+    public List<eCashierActions> m_availableActions;
+
 
     void Awake()
     {
@@ -42,6 +43,24 @@ public class GameManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void MakeAction(eCashierActions action)
+    {
+        if (action == eCashierActions.Grab1)
+        {
+            //There is article 1 on the tray and you pressed grab article 1!
+            if (m_availableActions.Contains(action))
+            {
+                var beer = GetZone(eZones.Tray).GetArticle(eArticles.Beer);
+                GetZone(eZones.Hand).MoveArticleHere(beer);
+            }
+            //Dude, you don't have article 1 on the tray!
+            else
+            {
+
+            }
+        }
     }
 }
 
