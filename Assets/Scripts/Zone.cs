@@ -87,5 +87,7 @@ public enum eZones
     Scanner,
     Scale,
     Hand,
+    CashRegister,
+    Client,
     Count
 }

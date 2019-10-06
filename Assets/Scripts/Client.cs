@@ -8,6 +8,7 @@ public class Client : MonoBehaviour
     public GameObject m_articlePrefab;
     public float m_patienceTime;
     public List<eCashierActions> m_processingList;
+    public Article m_cash;
 
     void Start()
     {
