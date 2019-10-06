@@ -16,4 +16,4 @@ MonoBehaviour:
   price: 20
   radius: 0.5
   processingList: 0000000002000000
-  sprite: {fileID: 21300000, guid: e1a6ff828133e6549a3eadc8a9691e0a, type: 3}
+  sprite: {fileID: 21300000, guid: 9c91c95af08f5b643aa83343e18e1c4a, type: 3}
