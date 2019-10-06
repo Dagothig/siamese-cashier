@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Eggs
   m_EditorClassIdentifier: 
   article: 11
-  price: 1
+  price: 8
   radius: 0.5
   processingList: 0000000002000000
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}

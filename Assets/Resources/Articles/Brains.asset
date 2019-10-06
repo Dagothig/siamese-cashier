@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Brains
   m_EditorClassIdentifier: 
   article: 2
-  price: 1
+  price: 8
   radius: 0.5
   processingList: 0000000002000000
   sprite: {fileID: 21300000, guid: 6e52de2742cd0b44f8d13876ddf30941, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pumpkin
   m_EditorClassIdentifier: 
   article: 8
-  price: 1
+  price: 7
   radius: 0.5
   processingList: 0000000002000000
   sprite: {fileID: 21300000, guid: 254f7c8a8e0deca4e8092868c007a029, type: 3}

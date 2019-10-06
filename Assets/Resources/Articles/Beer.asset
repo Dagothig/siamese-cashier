@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Beer
   m_EditorClassIdentifier: 
   article: 0
-  price: 1
+  price: 12
   radius: 0.5
   processingList: 0000000001000000
   sprite: {fileID: 21300000, guid: 84b8396821f9bdb4198143e8ce69bfcb, type: 3}
