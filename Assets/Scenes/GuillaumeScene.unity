@@ -1614,7 +1614,6 @@ MonoBehaviour:
   m_groceryStoreArticles:
   - article: 0
     articleData: {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
-  m_currentClient: {fileID: 0}
   m_clientPrefab: {fileID: 1261689926586091249, guid: cfa1d4cbe89e9ff4d9b4ebd75e94e01f,
     type: 3}
   m_zoneDictionnary:
@@ -1632,6 +1631,7 @@ MonoBehaviour:
     zone: {fileID: 1816545541}
   - eZone: 6
     zone: {fileID: 2589953}
+  m_score: 0
 --- !u!4 &1105506352
 Transform:
   m_ObjectHideFlags: 0
@@ -2156,6 +2156,7 @@ MonoBehaviour:
   m_bounds: {fileID: 0}
   m_isOpen: 0
   m_invoice: []
+  m_finalInvoice: []
 --- !u!1 &1853429632
 GameObject:
   m_ObjectHideFlags: 0

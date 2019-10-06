@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public List<sGroceryArticle> m_groceryStoreArticles;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
+    public int m_score;
 
     void Awake()
     {
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (cashRegister.m_isOpen)
                     {
-                        // We've put the payment inside the register.
+                        // We've put the whatever inside the register.
                         picked.m_processingList.RemoveAt(0);
                         cashRegister.MoveArticleHere(picked);
                     }
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
                     {
                         // We tried to put the payment in a closed register, so we drop it.
                         hand.RemoveArticle(picked);
+                        Destroy(picked.gameObject);
                     }
                 }
                 
@@ -95,15 +97,16 @@ public class GameManager : MonoBehaviour
             var picked = hand.GetArticle();
             if (picked != null)
             {
+                // We've given the client whatever thingy we had in hand.
                 client.MoveArticleHere(picked);
             }
             else
             {
+                // We've taken the payment from the client.
                 var payment = tray.m_currentArticles.Any() ? null : client.GetArticle(eArticles.Payment);
                 if (payment != null)
                 {
                     hand.MoveArticleHere(payment);
-                    // 'Tis finished here.
                 }
             }
         }
