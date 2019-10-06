@@ -26,5 +26,6 @@ public enum eArticles
     Cockroach,
     Eggs,
     Head,
+    Payment,
     Count
 }
