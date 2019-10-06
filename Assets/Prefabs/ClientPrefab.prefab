@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b942e58eaba581f45811b58190eb27dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentArticles: []
+  m_bounds: {fileID: 0}
   m_articleList:
   - {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
   - {fileID: 11400000, guid: 406eed2bc03a9714e808ba5a28e53003, type: 2}
@@ -54,6 +56,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46d7718c17733564a8c9e06d41af94ff, type: 2}
   - {fileID: 11400000, guid: 46d7718c17733564a8c9e06d41af94ff, type: 2}
   - {fileID: 11400000, guid: 1f686edbfe9c45848a2a410e7f90c895, type: 2}
+  m_payment: {fileID: 11400000, guid: ed62db197bcd89f428b47e064fb885a0, type: 2}
   m_articlePrefab: {fileID: 879157142499521017, guid: dfa2c3ce7c546394ebcd79fee806d87f,
     type: 3}
   m_patienceTime: 30

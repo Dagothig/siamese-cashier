@@ -1,14 +1,13 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Client : MonoBehaviour
+public class Client : Zone
 {
     public List<ArticleData> m_articleList;
+    public ArticleData m_payment;
     public GameObject m_articlePrefab;
     public float m_patienceTime;
-    public List<eCashierActions> m_processingList;
-    public Article m_cash;
 
     void Start()
     {
@@ -18,7 +17,7 @@ public class Client : MonoBehaviour
     void GenerateGrocery()
     {
         List<Article> articles = new List<Article>();
-        foreach (var data in m_articleList)
+        foreach (var data in m_articleList.Take(3))
         {
             var article = Instantiate(m_articlePrefab).GetComponent<Article>();
             article.GetComponent<SpriteRenderer>().sprite = data.sprite;
@@ -26,12 +25,12 @@ public class Client : MonoBehaviour
             article.m_processingList = new List<eCashierActions>(data.processingList);
             articles.Add(article);
         }
-        GameManager.s_instance.ResetClient(this, articles);
-        m_processingList = new List<eCashierActions> 
-        { 
-            eCashierActions.CashRegister, 
-            eCashierActions.Client,
-            eCashierActions.CashRegister 
-        };
+
+        var payment = Instantiate(m_articlePrefab).GetComponent<Article>();
+        payment.GetComponent<SpriteRenderer>().sprite = m_payment.sprite;
+        payment.m_articleData = m_payment;
+        payment.m_processingList = new List<eCashierActions>(m_payment.processingList);
+
+        GameManager.s_instance.ResetClient(this, articles, payment);
     }
 }

@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     public static GameManager s_instance;
 
     public List<sGroceryArticle> m_groceryStoreArticles;
-    public Client m_currentClient;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
 
@@ -21,14 +20,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
-    }
-
-    void Update()
-    {
-        if (m_currentClient == null)
-        {
-            m_currentClient = Instantiate(m_clientPrefab, transform).GetComponent<Client>();
         }
     }
 
@@ -75,12 +66,23 @@ public class GameManager : MonoBehaviour
             var cashRegister = GetZone(eZones.CashRegister) as CashRegister;
             if (cashRegister != null)
             {
-                if (cashRegister.m_isOpen)
+                var hand = GetZone(eZones.Hand);
+                var picked = hand.GetArticle();
+                if (picked != null)
                 {
-                    var picked = GetZone(eZones.Hand).GetArticle();
-                    picked.m_processingList.RemoveAt(0);
-                    cashRegister.MoveArticleHere(picked);
+                    if (cashRegister.m_isOpen)
+                    {
+                        // We've put the payment inside the register.
+                        picked.m_processingList.RemoveAt(0);
+                        cashRegister.MoveArticleHere(picked);
+                    }
+                    else
+                    {
+                        // We tried to put the payment in a closed register, so we drop it.
+                        hand.RemoveArticle(picked);
+                    }
                 }
+                
                 cashRegister.Toggle();
             }
         }
@@ -101,42 +103,54 @@ public class GameManager : MonoBehaviour
                 if (payment != null)
                 {
                     hand.MoveArticleHere(payment);
+                    // 'Tis finished here.
                 }
             }
         }
     }
 
-    public void ResetClient(Client client, List<Article> articles)
+    public void ResetClient(Client client, List<Article> articles, Article payment)
     {
         foreach (var article in articles)
         {
             GetZone(eZones.Tray).MoveArticleHere(article);
         }
+        GetZone(eZones.Client).MoveArticleHere(payment);
     }
 
-    public sCashierAction GetNextActionToMap(IList<sDoubleInteraction> interactions)
+    private sCashierAction getNextActionToMapForZoneArticles(IList<sDoubleInteraction> interactions, Zone zone)
     {
-        var zones = new eZones[] { eZones.Hand, eZones.Tray }.Select(GetZone);
-        foreach (var zone in zones)
-        {
-            var unmappedArticles =
+        var unmappedArticles =
             zone.m_currentArticles.Where(a =>
                 !interactions.Any(i =>
                     i.action.eAction == a.NextAction() &&
                     (i.action.eArticle == eArticles.Count || a.m_articleData.article == i.action.eArticle)));
-            var article = unmappedArticles.FirstOrDefault();
-            if (article != null)
+        var article = unmappedArticles.FirstOrDefault();
+        if (article != null)
+        {
+            var action = article.m_processingList.First();
+            return new sCashierAction
             {
-                var action = article.m_processingList.First();
-                return new sCashierAction
-                {
-                    eAction = action,
-                    eArticle = action == eCashierActions.Grab ? article.m_articleData.article : eArticles.Count
-                };
-            }
+                eAction = action,
+                eArticle = action == eCashierActions.Grab ? article.m_articleData.article : eArticles.Count
+            };
         }
 
-        return (sCashierAction)m_currentClient.m_processingList.DefaultIfEmpty(eCashierActions.Count).FirstOrDefault();
+        return (sCashierAction)eCashierActions.Count;
+    }
+
+    public sCashierAction GetNextActionToMap(IList<sDoubleInteraction> interactions)
+    {
+        var cashRegisterIsOpen = (GetZone(eZones.CashRegister) as CashRegister)?.m_isOpen ?? false;
+        return new eZones[] { eZones.Hand, eZones.Tray }
+            .Select(GetZone)
+            .Select(zone => getNextActionToMapForZoneArticles(interactions, zone))
+            .Where(action => action.eAction != eCashierActions.Count)
+            .DefaultIfEmpty(
+                cashRegisterIsOpen ? 
+                    getNextActionToMapForZoneArticles(interactions, GetZone(eZones.Client)) : 
+                    (sCashierAction)eCashierActions.CashRegister)
+            .FirstOrDefault();
     }
 }
 

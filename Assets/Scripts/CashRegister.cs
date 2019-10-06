@@ -10,5 +10,7 @@ public class CashRegister : Zone
     public void Toggle()
     {
         m_isOpen = !m_isOpen;
+        // TODO; lel c'est pas ça qui devrait se passer.
+        GetComponent<SpriteRenderer>().transform.Rotate(new Vector3(0, 0, m_isOpen ? 90 : -90));
     }
 }
