@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Client : Zone
@@ -17,7 +16,7 @@ public class Client : Zone
     void GenerateGrocery()
     {
         List<Article> articles = new List<Article>();
-        foreach (var data in m_articleList.Take(3))
+        foreach (var data in m_articleList)
         {
             var article = Instantiate(m_articlePrefab).GetComponent<Article>();
             article.GetComponent<SpriteRenderer>().sprite = data.sprite;
