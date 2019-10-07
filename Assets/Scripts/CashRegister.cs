@@ -14,6 +14,10 @@ public class CashRegister : Zone
         {
             m_finalInvoice = m_invoice;
         }
+        else
+        {
+            Clear();
+        }
         m_isOpen = !m_isOpen;
         m_invoice = new List<ArticleData>();
         // TODO; lel c'est pas ça qui devrait se passer.

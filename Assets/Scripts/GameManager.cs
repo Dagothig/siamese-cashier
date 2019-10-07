@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public List<sGroceryArticle> m_groceryStoreArticles;
     public GameObject m_clientPrefab;
     public List<sZones> m_zoneDictionnary;
+    public List<List<ArticleData>> m_clientGroceries;
     public int m_score;
 
     void Awake()
@@ -38,6 +39,9 @@ public class GameManager : MonoBehaviour
 
     public void MakeAction(sCashierAction action)
     {
+        var client = GetZone(eZones.Client) as Client;
+        var cashRegister = GetZone(eZones.CashRegister) as CashRegister;
+
         if (action.eAction == eCashierActions.Grab)
         {
             //The article is on the tray and you pressed to grab it!
@@ -55,7 +59,6 @@ public class GameManager : MonoBehaviour
             {
                 if (picked.m_processingList[0] == action.eAction)
                 {
-                    var cashRegister = GetZone(eZones.CashRegister) as CashRegister;
                     cashRegister?.m_invoice.Add(picked.m_articleData);
                 }
                 GetZone(eZones.Bag).MoveArticleHere(picked);
@@ -64,7 +67,6 @@ public class GameManager : MonoBehaviour
         }
         if (action.eAction == eCashierActions.CashRegister)
         {
-            var cashRegister = GetZone(eZones.CashRegister) as CashRegister;
             if (cashRegister != null)
             {
                 var hand = GetZone(eZones.Hand);
@@ -91,7 +93,6 @@ public class GameManager : MonoBehaviour
         if (action.eAction == eCashierActions.Client)
         {
             var tray = GetZone(eZones.Tray);
-            var client = GetZone(eZones.Client);
             var hand = GetZone(eZones.Hand);
 
             var picked = hand.GetArticle();
@@ -109,6 +110,13 @@ public class GameManager : MonoBehaviour
                     hand.MoveArticleHere(payment);
                 }
             }
+        }
+
+        // If the client has given their payment and the cash register is closed, then they are done here
+        if (client.GetArticle(eArticles.Payment) == null && !(cashRegister?.m_isOpen ?? false))
+        {
+            client.Leave();
+            ResetClient(client, newArticles, newPayments);
         }
     }
 

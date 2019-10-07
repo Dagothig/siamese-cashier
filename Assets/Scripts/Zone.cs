@@ -77,6 +77,13 @@ public class Zone : MonoBehaviour
         }
         return null;
     }
+
+    public virtual void Clear()
+    {
+        foreach (var article in m_currentArticles)
+            Destroy(article.gameObject);
+        m_currentArticles.Clear();
+    }
 }
 
 

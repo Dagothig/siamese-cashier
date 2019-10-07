@@ -32,4 +32,12 @@ public class Client : Zone
 
         GameManager.s_instance.ResetClient(this, articles, payment);
     }
+
+    public void Leave()
+    {
+        // TODO: award score for patience left?
+        GameManager.s_instance.GetZone(eZones.Bag).Clear();
+        Clear();
+        Destroy(gameObject);
+    }
 }
